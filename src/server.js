@@ -1,6 +1,8 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
+import mongoose from 'mongoose';
+
 import { env } from './env.js';
 import { getContacts, getContactsById } from './services/contacts.js';
 
@@ -8,6 +10,7 @@ const PORT = env('PORT');
 
 export const startServer = () => {
   const app = express();
+
   app.use(cors());
 
   app.use(
@@ -35,6 +38,14 @@ export const startServer = () => {
 
   app.get('/contacts/:contactId', async (req, res) => {
     const { contactId } = req.params;
+
+    if (!mongoose.isValidObjectId(contactId)) {
+      return res.json({
+        status: 400,
+        message: 'Invalid contact Id',
+      });
+    }
+    
     const contact = await getContactsById(contactId);
 
     if (!contact)
