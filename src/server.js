@@ -17,6 +17,8 @@ export const startServer = () => {
 
   app.use(cors());
 
+  app.use(express.json());
+
   app.use(
     pino({
       transport: {
@@ -34,7 +36,7 @@ export const startServer = () => {
   app.use(contactRouter);
 
   app.use('*', notFoundHandler);
-  
+
   app.use(errorHandler);
 
   app.listen(PORT, 3000, () => {
