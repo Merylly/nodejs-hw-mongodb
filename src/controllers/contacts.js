@@ -8,7 +8,6 @@ import {
   updateContact,
 } from '../services/contacts.js';
 
-
 export const getContactsController = async (req, res) => {
   const contacts = await getContacts();
 
@@ -51,7 +50,6 @@ export const createContactController = async (req, res) => {
   });
 };
 
-
 export const upsertContactController = async (req, res, next) => {
   const { contactId } = req.params;
 
@@ -89,9 +87,8 @@ export const patchContactController = async (req, res, next) => {
   });
 };
 
-
 export const deleteContactController = async (req, res, next) => {
-  const  id  = req.params.contactId;
+  const id = req.params.contactId;
   const contact = await deleteContact(id);
 
   if (!contact) {
@@ -101,6 +98,3 @@ export const deleteContactController = async (req, res, next) => {
 
   res.status(204).send();
 };
-
-
-
