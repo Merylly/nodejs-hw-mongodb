@@ -29,13 +29,7 @@ export const getContactByIdController = async (req, res, next) => {
   const contact = await getContactsById(contactId);
 
   if (!contact) {
-    next(
-      createHttpError({
-        status: 404,
-        message: 'Contact not found',
-        data: null,
-      }),
-    );
+    next(createHttpError(404, 'Contact not found'));
     return;
   }
 
@@ -64,13 +58,7 @@ export const upsertContactController = async (req, res, next) => {
   });
 
   if (!result) {
-    next(
-      createHttpError({
-        status: 404,
-        message: 'Contact not found',
-        data: null,
-      }),
-    );
+    next(createHttpError(404, 'Contact not found'));
     return;
   }
 
@@ -104,13 +92,7 @@ export const deleteContactController = async (req, res, next) => {
   const contact = await deleteContact(id);
 
   if (!contact) {
-    next(
-      createHttpError({
-        status: 404,
-        message: 'Contact not found',
-        data: null,
-      }),
-    );
+    next(createHttpError(404, 'Contact not found'));
     return;
   }
 
