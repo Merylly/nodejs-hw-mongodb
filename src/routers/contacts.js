@@ -13,29 +13,29 @@ import { createContactSchema, updateContactSchema } from '../validation/contacts
 
 const contactRouter = Router();
 
-contactRouter.get('/contacts', ctrlWrapper(getContactsController));
+contactRouter.get('/', ctrlWrapper(getContactsController));
 
 contactRouter.get(
-  '/contacts/:contactId',
+  '/:contactId',
   ctrlWrapper(getContactByIdController),
 );
 
 contactRouter.post(
-  '/contacts',
+  '/',
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
-contactRouter.put('/contacts/:contactId', ctrlWrapper(upsertContactController));
+contactRouter.put('/:contactId', ctrlWrapper(upsertContactController));
 
 contactRouter.patch(
-  '/contacts/:contactId',
+  '/:contactId',
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
 contactRouter.delete(
-  '/contacts/:contactId',
+  '/:contactId',
   ctrlWrapper(deleteContactController),
 );
 

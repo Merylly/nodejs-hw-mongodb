@@ -3,6 +3,7 @@ import { Contact } from '../db/models/contacts.js';
 import { createPaginationInformation } from '../utils/createPagInfo.js';
 
 export const getContacts = async ({
+  userId,
   page = 1,
   perPage = 10,
   sortBy = '_id',
@@ -10,10 +11,15 @@ export const getContacts = async ({
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
+  const userContacts = Contact.find();
+
+  if (userId) {
+    userContacts.where({ userId: userId });
+  }
 
   const [contactsCount, contacts] = await Promise.all([
-    Contact.countDocuments(),
-    Contact.find()
+    Contact.find().merge(userContacts).countDocuments(),
+    userContacts
       .skip(skip)
       .limit(limit)
       .sort({ [sortBy]: sortOrder })
@@ -32,8 +38,8 @@ export const getContacts = async ({
   };
 };
 
-export const getContactsById = async (contactId) => {
-  const contact = Contact.findById(contactId);
+export const getContactsById = async ({ contactId, userId }) => {
+  const contact = Contact.findOne({ _id: contactId, userId: userId });
 
   if (!contact) {
     throw createHttpError(404, 'Student not found');
@@ -42,17 +48,25 @@ export const getContactsById = async (contactId) => {
   return contact;
 };
 
-export const createContact = async (payload) => {
-  const contact = await Contact.create(payload);
+export const createContact = async (payload, userId) => {
+  const contact = await Contact.create({ ...payload, userId: userId });
   return contact;
 };
 
-export const updateContact = async (contactId, payload, options = {}) => {
-  const rawResult = await Contact.findByIdAndUpdate(contactId, payload, {
-    new: true,
-    includeResultMetadata: true,
-    ...options,
-  });
+export const updateContact = async (
+  { contactId, userId },
+  payload,
+  options = {},
+) => {
+  const rawResult = await Contact.findOneAndUpdate(
+    { _id: contactId, userId: userId },
+    payload,
+    {
+      new: true,
+      includeResultMetadata: true,
+      ...options,
+    },
+  );
 
   if (!rawResult || !rawResult.value) return null;
 
@@ -62,7 +76,10 @@ export const updateContact = async (contactId, payload, options = {}) => {
   };
 };
 
-export const deleteContact = async (contactId) => {
-  const contact = await Contact.findByIdAndDelete(contactId);
+export const deleteContact = async ({ contactId, userId }) => {
+  const contact = await Contact.findOneAndDelete({
+    _id: contactId,
+    userId: userId,
+  });
   return contact;
 };
