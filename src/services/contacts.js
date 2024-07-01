@@ -15,7 +15,7 @@ export const getContacts = async ({
 
 
   const [contactsCount, contacts] = await Promise.all([
-    Contact.find({ userId }).merge(contactsQuery).countDocuments(),
+    Contact.countDocuments({ userId }),
     contactsQuery
       .skip(skip)
       .limit(limit)
