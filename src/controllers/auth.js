@@ -1,11 +1,16 @@
-import { loginUser, logoutUser, refreshSession, registerUser } from "../services/auth.js";
+import {
+  loginUser,
+  logoutUser,
+  refreshSession,
+  registerUser,
+} from '../services/auth.js';
 
 const setupSessionCookies = (res, session) => {
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expire: 7 * 24 * 60 * 60,
   });
-    
+
   res.cookie('sessionToken', session.refreshToken, {
     httpOnly: true,
     expire: 7 * 24 * 60 * 60,
@@ -48,10 +53,9 @@ export const refreshTokenController = async (req, res) => {
 };
 
 export const logoutController = async (req, res) => {
-  await logoutUser({
-    sessionId: req.cookies.sessionId,
-    sessionToken: req.cookies.sessionToken,
-  });
+  if (req.cookies.sessionId) {
+    await logoutUser(req.cookies.sessionId);
+  }
 
   res.clearCookie('sessionId');
   res.clearCookie('sessionToken');
