@@ -8,12 +8,12 @@ import {
 const setupSessionCookies = (res, session) => {
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expire: 7 * 24 * 60 * 60,
+    expire: new Date(Date.now() + 24 * 60* 60 * 1000),
   });
 
   res.cookie('sessionToken', session.refreshToken, {
     httpOnly: true,
-    expire: 7 * 24 * 60 * 60,
+    expire: new Date(Date.now() + 24 * 60 * 60 * 1000),
   });
 };
 
