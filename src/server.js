@@ -1,7 +1,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import cookiesParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 
 import rootRouter from './routers/index.js';
@@ -18,7 +18,7 @@ export const startServer = () => {
   const app = express();
 
   app.use(cors());
-   app.use(cookiesParser());
+   app.use(cookieParser());
 
   app.use(express.json());
 

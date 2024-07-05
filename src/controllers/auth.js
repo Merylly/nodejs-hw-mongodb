@@ -1,21 +1,10 @@
+import { ONE_DAY } from '../constants/index.js';
 import {
   loginUser,
   logoutUser,
   refreshSession,
   registerUser,
 } from '../services/auth.js';
-
-const setupSessionCookies = (res, session) => {
-  res.cookie('sessionId', session._id, {
-    httpOnly: true,
-    expire: new Date(Date.now() + 24 * 60* 60 * 1000),
-  });
-
-  res.cookie('sessionToken', session.refreshToken, {
-    httpOnly: true,
-    expire: new Date(Date.now() + 24 * 60 * 60 * 1000),
-  });
-};
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -30,7 +19,15 @@ export const registerUserController = async (req, res) => {
 export const loginUserController = async (req, res) => {
   const session = await loginUser(req.body);
 
-  setupSessionCookies(res, session);
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
 
   res.json({
     status: 200,
@@ -39,9 +36,23 @@ export const loginUserController = async (req, res) => {
   });
 };
 
+const setupSessionCookies = (res, session) => {
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+};
+
 export const refreshTokenController = async (req, res) => {
-  const { sessionId, sessionToken } = req.cookies;
-  const session = await refreshSession({ sessionId, sessionToken });
+  const session = await refreshSession({
+    sessionId: req.cookies.sessionId,
+    refreshToken: req.cookies.refreshToken,
+  });
 
   setupSessionCookies(res, session);
 
@@ -58,7 +69,7 @@ export const logoutController = async (req, res) => {
   }
 
   res.clearCookie('sessionId');
-  res.clearCookie('sessionToken');
+  res.clearCookie('refreshToken');
 
   res.status(204).send();
 };
