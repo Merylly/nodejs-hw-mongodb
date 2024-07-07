@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import rootRouter from './routers/index.js';
 
-import { env } from './env.js';
+import { env } from './utils/env.js';
 
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
