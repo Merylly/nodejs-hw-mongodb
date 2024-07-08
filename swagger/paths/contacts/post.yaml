@@ -14,7 +14,6 @@ requestBody:
         required:
           - name
           - phoneNumber
-          - contactType
         properties:
           name:
             type: string
