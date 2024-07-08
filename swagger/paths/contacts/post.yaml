@@ -31,7 +31,7 @@ requestBody:
           isFavourite:
             type: boolean
             example: false
-          photo:
+          avatar:
             type: string
             format: binary
             example: https://res.cloudinary.com/dfas6socf/image/upload/v1720432091/txb0oflbk0wqikeawrds.jpg

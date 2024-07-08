@@ -1,6 +1,6 @@
 tags:
   - Contacts
-summary: Change contact
+summary: Update contact
 operationId: putContact
 description: 'Update contact'
 security:
@@ -34,7 +34,7 @@ requestBody:
           isFavourite:
             type: boolean
             example: false
-          photo:
+          avatar:
             type: string
             format: binary
             example: https://res.cloudinary.com/dfas6socf/image/upload/v1720432091/txb0oflbk0wqikeawrds.jpg
