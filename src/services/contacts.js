@@ -50,7 +50,8 @@ export const createContact = async (payload, userId, photo) => {
 };
 
 export const updateContact = async (
-  { contactId, userId },
+  contactId,
+  userId,
   { photo, ...payload },
   options = {},
 ) => {
