@@ -25,6 +25,9 @@ const contactsSchema = new Schema(
       required: true,
       default: 'personal',
     },
+    avatar: {
+      type: String,
+    },
   },
   {
     timestamps: true,

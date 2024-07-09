@@ -1,0 +1,65 @@
+tags:
+  - Contacts
+summary: Update contact
+operationId: putContact
+description: 'Update contact'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '667ffe6a9cdb92304e9451d3'
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: 'Mary'
+          phoneNumber:
+            type: string
+            example: '111-22-33'
+          contactType:
+            type: string
+            enum: ['work', 'home', 'personal']
+          email:
+            type: string
+            example: 'example@gmail.com'
+          isFavourite:
+            type: boolean
+            example: false
+          avatar:
+            type: string
+            format: binary
+            example: https://res.cloudinary.com/dfas6socf/image/upload/v1720432091/txb0oflbk0wqikeawrds.jpg
+responses:
+  '200':
+    description: 'Update contact'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully update contact with id 667ffe6a9cdb92304e9451d3!
+            data:
+              type: object
+              $ref: '../../../components/schemas/contact.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'

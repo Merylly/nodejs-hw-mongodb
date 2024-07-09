@@ -13,7 +13,6 @@ export const getContacts = async ({
   const skip = (page - 1) * perPage;
   const contactsQuery = Contact.find({ userId });
 
-
   const [contactsCount, contacts] = await Promise.all([
     Contact.countDocuments({ userId }),
     contactsQuery
@@ -45,19 +44,19 @@ export const getContactsById = async ({ contactId, userId }) => {
   return contact;
 };
 
-export const createContact = async (payload, userId) => {
-  const contact = await Contact.create({ ...payload, userId: userId });
+export const createContact = async (payload, userId, avatar) => {
+  const contact = await Contact.create({ ...payload, userId: userId, avatar });
   return contact;
 };
 
 export const updateContact = async (
   { contactId, userId },
-  payload,
+  { avatar, ...payload },
   options = {},
 ) => {
   const rawResult = await Contact.findOneAndUpdate(
     { _id: contactId, userId: userId },
-    payload,
+    { ...payload, avatar },
     {
       new: true,
       includeResultMetadata: true,
