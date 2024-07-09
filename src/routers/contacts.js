@@ -26,20 +26,20 @@ contactRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
 
 contactRouter.post(
   '/',
-  upload.single('avatar'),
+  upload.single('photo'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 contactRouter.put(
   '/:contactId',
-  upload.single('avatar'),
+  upload.single('photo'),
   ctrlWrapper(upsertContactController),
 );
 
 contactRouter.patch(
   '/:contactId',
-  upload.single('avatar'),
+  upload.single('photo'),
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
